@@ -1,2 +1,2 @@
 # QUI
-Quick UI for Unity GUI resolution
+UI Tool for Unity quick GUI deployment.
