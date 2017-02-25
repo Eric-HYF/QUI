@@ -54,6 +54,7 @@ namespace  com.yodo1.qui
 
         private static bool boolTmp;
         private static string strTemp;
+        private static int intTemp;
 
         #region TextField
 
@@ -63,7 +64,7 @@ namespace  com.yodo1.qui
         /// <param name="value"></param>
         /// <param name="label">the unique id for the ui </param>
         /// <returns></returns>
-        public static string TextField(string value, string label)
+        public static string TextField(ref string value, string label)
         {
             string guid = label;
             int id = ACTION_NONE;
@@ -78,6 +79,7 @@ namespace  com.yodo1.qui
                 {
                     cur_clicked_guid = guid;
                     strBuff[guid] = value;
+                    strTemp = value;
                 }
 
 
@@ -91,7 +93,7 @@ namespace  com.yodo1.qui
                     if(id == ACTION_CLICK)
                     {
                         // OK 
-                        strBuff.Remove(guid);
+                        strBuff.Remove(cur_clicked_guid);
                         cur_clicked_guid = "";
                         id = ACTION_NONE;
                     }
@@ -119,8 +121,10 @@ namespace  com.yodo1.qui
                     {
                         if (cur_clicked_guid != label)
                         {
+                            strBuff.Remove(cur_clicked_guid);
                             cur_clicked_guid = label; // Click and change target
                             strBuff[label] = value;
+                            strTemp = value;
                         }
                     }
                 }
@@ -171,15 +175,17 @@ namespace  com.yodo1.qui
 
             GUI.color = Color.cyan;
             GUI.backgroundColor = Color.gray;
-            value = GUILayout.TextField(value, GUILayout.Width(TEXT_WIDTH), GUILayout.Height(TEXT_HEIGHT));
+            strTemp = GUILayout.TextField(strTemp, GUILayout.Width(TEXT_WIDTH), GUILayout.Height(TEXT_HEIGHT));
             Button(CHECK_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.green, Color.green, () => { id = ACTION_CLICK; });
             Button(CROSS_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.red, Color.red, () => { id = ACTION_CANCEL; });
             Button(PASTE_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.yellow, Color.yellow, () => { id = ACTION_PASTE; });
             GUILayout.EndHorizontal();
-            
+
             actionId = id;
+            if (id == ACTION_CLICK) return strTemp;
+            else if (id == ACTION_CANCEL) return strBuff[label];
             return value;
-            
+
         }
 
 
@@ -229,6 +235,7 @@ namespace  com.yodo1.qui
                 {
                     cur_clicked_guid = label;
                     intBuff[label] = value;
+                    intTemp = value;
                 }
             }
             else
@@ -267,6 +274,7 @@ namespace  com.yodo1.qui
                     {
                         cur_clicked_guid = label; // Click and change target
                         intBuff[label] = value;
+                        intTemp = value;
                     }
                 }
             }
@@ -315,16 +323,16 @@ namespace  com.yodo1.qui
 
             GUI.color = Color.cyan;
             GUI.backgroundColor = Color.gray;
-            intBuff[label] = EditorGUILayout.IntField(intBuff[label], GUILayout.Width(TEXT_WIDTH), GUILayout.Height(TEXT_HEIGHT));
+            intTemp = EditorGUILayout.IntField(intTemp, GUILayout.Width(TEXT_WIDTH), GUILayout.Height(TEXT_HEIGHT));
             Button(CHECK_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.green, Color.green, () => { id = ACTION_CLICK; });
             Button(CROSS_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.red, Color.red, () => { id = ACTION_CANCEL; });
             Button(PASTE_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.yellow, Color.yellow, () => { id = ACTION_PASTE; });
             GUILayout.EndHorizontal();
 
 
-
             actionId = id;
-            if (id == 1) return intBuff[label];
+            if (id == ACTION_CLICK) return intTemp;
+            else if (id == ACTION_CANCEL) return intBuff[label];
             return value;
 
         }
@@ -472,7 +480,8 @@ namespace  com.yodo1.qui
 
 
             actionId = id;
-            if (id == 1) return boolTmp;
+            if (id == ACTION_CLICK) return boolTmp;
+            else if (id == ACTION_CANCEL) return boolBuff[label];
             return value;
 
         }
