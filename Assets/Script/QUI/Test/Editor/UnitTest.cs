@@ -53,9 +53,10 @@ public class UnitTestWindow : EditorWindow
         GUILayout.Space(10);
 
 
-        QUI.LabelText(ref data.id, "ID");
-        QUI.LabelText(ref data.name, "Name");
-        //QUI.TextInput(ref data.number, "Count"));
+        data.id = QUI.TextField(data.id, "ID");
+        data.name = QUI.TextField(data.name, "Name");
+        QUI.IntField(ref data.number, "Count");
+        QUI.Toggle(ref data.isObject, "isObject");
 
         //data.number = (int)QUI.TextInput(data.number, "Count");
         //data.isObject = (bool)QUI.TextInput(data.name, "Object");
