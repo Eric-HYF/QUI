@@ -43,6 +43,10 @@ namespace  com.yodo1.qui
         public const int BUTTON_HEIGHT_2 = 17;
 
         private static string cur_clicked_guid = "";
+        public static string CurClickedGUI
+        {
+            get { return cur_clicked_guid;  }
+        }
 
         private static Dictionary<string, object> tempDic = new Dictionary<string, object>();
 
@@ -64,7 +68,7 @@ namespace  com.yodo1.qui
         /// <param name="value"></param>
         /// <param name="label">the unique id for the ui </param>
         /// <returns></returns>
-        public static string TextField(ref string value, string label)
+        public static void TextField(ref string value, string label)
         {
             string guid = label;
             int id = ACTION_NONE;
@@ -129,8 +133,6 @@ namespace  com.yodo1.qui
                     }
                 }
             }
-
-            return value;
         }
 
         /// <summary>
@@ -471,7 +473,7 @@ namespace  com.yodo1.qui
             // Edit
             GUILayout.Label(label, GUILayout.Width(TITLE_WIDTH));
 
-            boolTmp = EditorGUILayout.Toggle(boolTmp);
+            boolTmp = EditorGUILayout.Toggle(boolTmp, GUILayout.Width(TEXT_WIDTH));
             Button(CHECK_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.green, Color.green, () => { id = ACTION_CLICK; });
             Button(CROSS_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.red, Color.red, () => { id = ACTION_CANCEL; });
             Button(PASTE_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.yellow, Color.yellow, () => { id = ACTION_PASTE; });
@@ -499,7 +501,7 @@ namespace  com.yodo1.qui
             GUI.backgroundColor = Color.white;
             GUILayout.BeginHorizontal();
             GUILayout.Label(label, GUILayout.Width(TITLE_WIDTH), GUILayout.Height(TEXT_HEIGHT));
-            bool k = GUILayout.Toggle(value, "");
+            bool k = EditorGUILayout.Toggle(value, GUILayout.Width(TEXT_WIDTH));
             if(k != value)
             {
                 if (cur_clicked_guid != label) actionId = ACTION_CLICK;
