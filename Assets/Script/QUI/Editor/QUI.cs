@@ -23,6 +23,7 @@ namespace  com.yodo1.qui
     /// </summary>
     public class QUI
     {
+        #region Property
 
         public const string CHECK_MARK = "✔";
         public const string CROSS_MARK = "✘";
@@ -45,7 +46,7 @@ namespace  com.yodo1.qui
         private static string cur_clicked_guid = "";
         public static string CurClickedGUI
         {
-            get { return cur_clicked_guid;  }
+            get { return cur_clicked_guid; }
         }
 
         private static Dictionary<string, object> tempDic = new Dictionary<string, object>();
@@ -60,6 +61,8 @@ namespace  com.yodo1.qui
         private static string strTemp;
         private static int intTemp;
 
+        #endregion
+
         #region TextField
 
         /// <summary>
@@ -68,7 +71,7 @@ namespace  com.yodo1.qui
         /// <param name="value"></param>
         /// <param name="label">the unique id for the ui </param>
         /// <returns></returns>
-        public static void TextField(ref string value, string label)
+        public static void TextField(ref string value, string label, float bodyWidth = TEXT_WIDTH, float titleWidth = TITLE_WIDTH)
         {
             string guid = label;
             int id = ACTION_NONE;
@@ -78,7 +81,7 @@ namespace  com.yodo1.qui
 
                 // Text Body
 
-                TextField_Display(value, label, out id);
+                TextField_Display(value, label, out id, bodyWidth, titleWidth);
                 if(id == ACTION_CLICK)
                 {
                     cur_clicked_guid = guid;
@@ -93,7 +96,7 @@ namespace  com.yodo1.qui
                 // Edit Text
                 if (cur_clicked_guid == guid)
                 {
-                    value = TextField_Edit(value, label, out id);
+                    value = TextField_Edit(value, label, out id, bodyWidth, titleWidth);
                     if(id == ACTION_CLICK)
                     {
                         // OK 
@@ -120,7 +123,7 @@ namespace  com.yodo1.qui
                 else
                 {
                     // Lock
-                    TextField_Lock(value, label, out id);
+                    TextField_Lock(value, label, out id, bodyWidth, titleWidth);
                     if(id == 1)
                     {
                         if (cur_clicked_guid != label)
@@ -141,15 +144,15 @@ namespace  com.yodo1.qui
         /// <param name="value"></param>
         /// <param name="label"></param>
         /// <param name="actionId"></param>
-        private static void TextField_Display(string value, string label, out int actionId)
+        private static void TextField_Display(string value, string label, out int actionId, float bodyWidth = TEXT_WIDTH, float titleWidth = TITLE_WIDTH)
         {
             actionId = ACTION_NONE;
             GUILayout.BeginHorizontal();
             if (!string.IsNullOrEmpty(label))
             {
-                GUILayout.Label(label, GUILayout.Width(TITLE_WIDTH), GUILayout.Height(TEXT_HEIGHT));
+                GUILayout.Label(label, GUILayout.Width(titleWidth), GUILayout.Height(TEXT_HEIGHT));
 
-                if (GUILayout.Button(value, new GUIStyle(Skin.TextField.ToString()), GUILayout.Width(TEXT_WIDTH), GUILayout.Height(TEXT_HEIGHT)))
+                if (GUILayout.Button(value, new GUIStyle(Skin.TextField.ToString()), GUILayout.Width(bodyWidth), GUILayout.Height(TEXT_HEIGHT)))
                 {
                     actionId = ACTION_CLICK;
                 }
@@ -168,16 +171,16 @@ namespace  com.yodo1.qui
         /// <param name="label"></param>
         /// <param name="onOK"></param>
         /// <param name="onCancel"></param>
-        private static string TextField_Edit(string value, string label, out int actionId)
+        private static string TextField_Edit(string value, string label, out int actionId, float bodyWidth = TEXT_WIDTH, float titleWidth = TITLE_WIDTH)
         {
             int id = 0;
             GUILayout.BeginHorizontal();
             // Edit
-            GUILayout.Label(label, GUILayout.Width(TITLE_WIDTH));
+            GUILayout.Label(label, GUILayout.Width(titleWidth));
 
             GUI.color = Color.cyan;
             GUI.backgroundColor = Color.gray;
-            strTemp = GUILayout.TextField(strTemp, GUILayout.Width(TEXT_WIDTH), GUILayout.Height(TEXT_HEIGHT));
+            strTemp = GUILayout.TextField(strTemp, GUILayout.Width(bodyWidth), GUILayout.Height(TEXT_HEIGHT));
             Button(CHECK_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.green, Color.green, () => { id = ACTION_CLICK; });
             Button(CROSS_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.red, Color.red, () => { id = ACTION_CANCEL; });
             Button(PASTE_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.yellow, Color.yellow, () => { id = ACTION_PASTE; });
@@ -198,14 +201,14 @@ namespace  com.yodo1.qui
         /// </summary>
         /// <param name="value"></param>
         /// <param name="label"></param>
-        private static void TextField_Lock(string value, string label, out int actionId)
+        private static void TextField_Lock(string value, string label, out int actionId, float bodyWidth = TEXT_WIDTH, float titleWidth = TITLE_WIDTH)
         {
             actionId = ACTION_NONE;
             GUI.color = Color.gray;
             GUI.backgroundColor = Color.white;
             GUILayout.BeginHorizontal();
-            GUILayout.Label(label, GUILayout.Width(TITLE_WIDTH), GUILayout.Height(TEXT_HEIGHT));
-            if(GUILayout.Button(value, new GUIStyle("TextField"), GUILayout.Width(TEXT_WIDTH), GUILayout.Height(TEXT_HEIGHT)))
+            GUILayout.Label(label, GUILayout.Width(titleWidth), GUILayout.Height(TEXT_HEIGHT));
+            if(GUILayout.Button(value, new GUIStyle("TextField"), GUILayout.Width(bodyWidth), GUILayout.Height(TEXT_HEIGHT)))
             {
                 actionId = ACTION_CLICK;
             }
@@ -224,7 +227,7 @@ namespace  com.yodo1.qui
         /// </summary>
         /// <param name="value"></param>
         /// <param name="label"></param>
-        public static void IntField(ref int value, string label)
+        public static void IntField(ref int value, string label, float bodyWidth = TEXT_WIDTH, float titleWidth = TITLE_WIDTH)
         {
             int actionId = 0;
             if (string.IsNullOrEmpty(cur_clicked_guid))
@@ -232,7 +235,7 @@ namespace  com.yodo1.qui
                 // Display
 
                 // Text Body
-                IntField_Display(value, label, out actionId);
+                IntField_Display(value, label, out actionId, bodyWidth, titleWidth);
                 if (actionId == ACTION_CLICK)
                 {
                     cur_clicked_guid = label;
@@ -246,7 +249,7 @@ namespace  com.yodo1.qui
                 if (cur_clicked_guid == label)
                 {
                     actionId = ACTION_NONE;
-                    value = IntField_Edit(value, label, out actionId);
+                    value = IntField_Edit(value, label, out actionId, bodyWidth, titleWidth);
 
                     if (actionId == ACTION_CLICK)
                     {
@@ -271,7 +274,7 @@ namespace  com.yodo1.qui
                 else
                 {
                     // Lock
-                    IntField_Lock(value, label, out actionId);
+                    IntField_Lock(value, label, out actionId, bodyWidth, titleWidth);
                     if(actionId == ACTION_CLICK)
                     {
                         cur_clicked_guid = label; // Click and change target
@@ -291,15 +294,15 @@ namespace  com.yodo1.qui
         /// <param name="value"></param>
         /// <param name="label"></param>
         /// <param name="actionId"></param>
-        private static void IntField_Display(int value, string label, out int actionId)
+        private static void IntField_Display(int value, string label, out int actionId, float bodyWidth = TEXT_WIDTH, float titleWidth = TITLE_WIDTH)
         {
             actionId = 0;
             GUILayout.BeginHorizontal();
             if (!string.IsNullOrEmpty(label))
             {
-                GUILayout.Label(label, GUILayout.Width(TITLE_WIDTH), GUILayout.Height(TEXT_HEIGHT));
+                GUILayout.Label(label, GUILayout.Width(titleWidth), GUILayout.Height(TEXT_HEIGHT));
 
-                if (GUILayout.Button(value.ToString(), new GUIStyle(Skin.TextField.ToString()), GUILayout.Width(TEXT_WIDTH), GUILayout.Height(TEXT_HEIGHT)))
+                if (GUILayout.Button(value.ToString(), new GUIStyle(Skin.TextField.ToString()), GUILayout.Width(bodyWidth), GUILayout.Height(TEXT_HEIGHT)))
                 {
                     actionId = ACTION_CLICK;
                 }
@@ -315,17 +318,17 @@ namespace  com.yodo1.qui
         /// <param name="label"></param>
         /// <param name="actionId"></param>
         /// <returns></returns>
-        private static int IntField_Edit(int value, string label, out int actionId)
+        private static int IntField_Edit(int value, string label, out int actionId, float bodyWidth = TEXT_WIDTH, float titleWidth = TITLE_WIDTH)
         {
             actionId = 0;
             int id = 0;
             GUILayout.BeginHorizontal();
             // Edit
-            GUILayout.Label(label, GUILayout.Width(TITLE_WIDTH));
+            GUILayout.Label(label, GUILayout.Width(titleWidth));
 
             GUI.color = Color.cyan;
             GUI.backgroundColor = Color.gray;
-            intTemp = EditorGUILayout.IntField(intTemp, GUILayout.Width(TEXT_WIDTH), GUILayout.Height(TEXT_HEIGHT));
+            intTemp = EditorGUILayout.IntField(intTemp, GUILayout.Width(bodyWidth), GUILayout.Height(TEXT_HEIGHT));
             Button(CHECK_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.green, Color.green, () => { id = ACTION_CLICK; });
             Button(CROSS_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.red, Color.red, () => { id = ACTION_CANCEL; });
             Button(PASTE_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.yellow, Color.yellow, () => { id = ACTION_PASTE; });
@@ -346,14 +349,14 @@ namespace  com.yodo1.qui
         /// <param name="value"></param>
         /// <param name="label"></param>
         /// <param name="actionId"></param>
-        private static void IntField_Lock(int value, string label, out int actionId)
+        private static void IntField_Lock(int value, string label, out int actionId, float bodyWidth = TEXT_WIDTH, float titleWidth = TITLE_WIDTH)
         {
             actionId = 0;
             GUI.color = Color.gray;
             GUI.backgroundColor = Color.white;
             GUILayout.BeginHorizontal();
-            GUILayout.Label(label, GUILayout.Width(TITLE_WIDTH), GUILayout.Height(TEXT_HEIGHT));
-            if (GUILayout.Button(value.ToString(), new GUIStyle("TextField"), GUILayout.Width(TEXT_WIDTH), GUILayout.Height(TEXT_HEIGHT)))
+            GUILayout.Label(label, GUILayout.Width(titleWidth), GUILayout.Height(TEXT_HEIGHT));
+            if (GUILayout.Button(value.ToString(), new GUIStyle("TextField"), GUILayout.Width(bodyWidth), GUILayout.Height(TEXT_HEIGHT)))
             {
                 if (cur_clicked_guid != label) actionId = ACTION_CLICK;
             }
@@ -372,7 +375,7 @@ namespace  com.yodo1.qui
         /// </summary>
         /// <param name="value"></param>
         /// <param name="label"></param>
-        public static void Toggle(ref bool value, string label)
+        public static void Toggle(ref bool value, string label, float bodyWidth = TEXT_WIDTH, float titleWidth = TITLE_WIDTH)
         {
             int actionId = 0;
             if (string.IsNullOrEmpty(cur_clicked_guid))
@@ -380,7 +383,7 @@ namespace  com.yodo1.qui
                 // Display
 
                 // Text Body
-                Toggle_Display(value, label, out actionId);
+                Toggle_Display(value, label, out actionId, bodyWidth, titleWidth);
                 if (actionId == ACTION_CLICK)
                 {
                     cur_clicked_guid = label;
@@ -393,7 +396,7 @@ namespace  com.yodo1.qui
                 if (cur_clicked_guid == label)
                 {
                     actionId = ACTION_NONE;
-                    value = Toggle_Edit(value, label, out actionId);
+                    value = Toggle_Edit(value, label, out actionId, bodyWidth, titleWidth); ;
 
                     if (actionId == ACTION_CLICK)
                     {
@@ -418,7 +421,7 @@ namespace  com.yodo1.qui
                 else
                 {
                     // Lock
-                    Toggle_Lock(value, label, out actionId);
+                    Toggle_Lock(value, label, out actionId, bodyWidth, titleWidth);
                     if (actionId == ACTION_CLICK)
                     {
                         cur_clicked_guid = label; // Click and change target
@@ -438,13 +441,13 @@ namespace  com.yodo1.qui
         /// <param name="value"></param>
         /// <param name="label"></param>
         /// <param name="actionId"></param>
-        private static void Toggle_Display(bool value, string label, out int actionId)
+        private static void Toggle_Display(bool value, string label, out int actionId, float bodyWidth = TEXT_WIDTH, float titleWidth = TITLE_WIDTH)
         {
             actionId = 0;
             if (!string.IsNullOrEmpty(label))
             {
                 GUILayout.BeginHorizontal();
-                GUILayout.Label(label, GUILayout.Width(TITLE_WIDTH), GUILayout.Height(TEXT_HEIGHT));
+                GUILayout.Label(label, GUILayout.Width(titleWidth), GUILayout.Height(TEXT_HEIGHT));
 
                 bool f = GUILayout.Toggle(value, "");
                 if( f != value)
@@ -465,15 +468,15 @@ namespace  com.yodo1.qui
         /// <param name="label"></param>
         /// <param name="actionId"></param>
         /// <returns></returns>
-        private static bool Toggle_Edit(bool value, string label, out int actionId)
+        private static bool Toggle_Edit(bool value, string label, out int actionId, float bodyWidth = TEXT_WIDTH, float titleWidth = TITLE_WIDTH)
         {
             actionId = 0;
             int id = 0;
             GUILayout.BeginHorizontal();
             // Edit
-            GUILayout.Label(label, GUILayout.Width(TITLE_WIDTH));
+            GUILayout.Label(label, GUILayout.Width(titleWidth));
 
-            boolTmp = EditorGUILayout.Toggle(boolTmp, GUILayout.Width(TEXT_WIDTH));
+            boolTmp = EditorGUILayout.Toggle(boolTmp, GUILayout.Width(bodyWidth));
             Button(CHECK_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.green, Color.green, () => { id = ACTION_CLICK; });
             Button(CROSS_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.red, Color.red, () => { id = ACTION_CANCEL; });
             Button(PASTE_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.yellow, Color.yellow, () => { id = ACTION_PASTE; });
@@ -494,13 +497,13 @@ namespace  com.yodo1.qui
         /// <param name="value"></param>
         /// <param name="label"></param>
         /// <param name="actionId"></param>
-        private static void Toggle_Lock(bool value, string label, out int actionId)
+        private static void Toggle_Lock(bool value, string label, out int actionId, float bodyWidth = TEXT_WIDTH, float titleWidth = TITLE_WIDTH)
         {
             actionId = 0;
             GUI.color = Color.gray;
             GUI.backgroundColor = Color.white;
             GUILayout.BeginHorizontal();
-            GUILayout.Label(label, GUILayout.Width(TITLE_WIDTH), GUILayout.Height(TEXT_HEIGHT));
+            GUILayout.Label(label, GUILayout.Width(titleWidth), GUILayout.Height(bodyWidth));
             bool k = EditorGUILayout.Toggle(value, GUILayout.Width(TEXT_WIDTH));
             if(k != value)
             {
