@@ -53,17 +53,29 @@ public class UnitTestWindow : EditorWindow
         GUILayout.Space(10);
 
 
-        data.id = QUI.TextField(data.id, "ID");
-        data.name = QUI.TextField(data.name, "Name");
+
+        QUI.TextField(ref data.id, "ID");
+        QUI.TextField(ref data.name, "Name");
         QUI.IntField(ref data.number, "Count");
         QUI.Toggle(ref data.isObject, "isObject");
 
-        //data.number = (int)QUI.TextInput(data.number, "Count");
-        //data.isObject = (bool)QUI.TextInput(data.name, "Object");
+        GUILayout.Space(10);
+        GUILayout.Label("------------------------------");
+        GUILayout.Space(10);
 
 
+        if (QUI.CurClickedGUI == "ID") GUI.color = Color.green;
         GUILayout.Label("ID: "+ data.id);
-
+        if (QUI.CurClickedGUI == "ID") GUI.color = Color.white;
+        if (QUI.CurClickedGUI == "Name") GUI.color = Color.green;
+        GUILayout.Label("Name: " + data.name);
+        if (QUI.CurClickedGUI == "Name") GUI.color = Color.white;
+        if (QUI.CurClickedGUI == "Count") GUI.color = Color.green;
+        GUILayout.Label("Count: " + data.number);
+        if (QUI.CurClickedGUI == "Count") GUI.color = Color.white;
+        if (QUI.CurClickedGUI == "isObject") GUI.color = Color.green;
+        GUILayout.Label("isObject: " + data.isObject);
+        if (QUI.CurClickedGUI == "isObject") GUI.color = Color.white;
     }
 
 
