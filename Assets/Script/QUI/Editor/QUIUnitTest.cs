@@ -1,14 +1,15 @@
-﻿using UnityEngine;
+﻿//#define TEST_QUI
+using UnityEngine;
 using System.Collections;
-using com.yodo1.qui;
 using UnityEditor;
 
 public class UnitTestWindow : EditorWindow
 {
 
+#if TEST_QUI
 
 
-    private static UnitTestWindow  _window;
+    private static UnitTestWindow _window;
 
 
     [MenuItem("QUI/Test")]
@@ -41,9 +42,6 @@ public class UnitTestWindow : EditorWindow
 
     #endregion
 
-
-
-
     #region GUI Draw
 
     void OnGUI()
@@ -65,7 +63,7 @@ public class UnitTestWindow : EditorWindow
 
 
         if (QUI.CurClickedGUI == "ID") GUI.color = Color.green;
-        GUILayout.Label("ID: "+ data.id);
+        GUILayout.Label("ID: " + data.id);
         if (QUI.CurClickedGUI == "ID") GUI.color = Color.white;
         if (QUI.CurClickedGUI == "Name") GUI.color = Color.green;
         GUILayout.Label("Name: " + data.name);
@@ -82,23 +80,9 @@ public class UnitTestWindow : EditorWindow
 
     #endregion
 
-
-
-
-
-
-
-
+#endif
 
 }
-
-
-public class UnitTextWindow
-{
-
-}
-
-
 
 
 public class TestData

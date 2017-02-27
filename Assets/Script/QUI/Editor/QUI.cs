@@ -4,7 +4,7 @@ using UnityEditor;
 using System.Collections.Generic;
 using System;
 
-namespace  com.yodo1.qui
+namespace  UnityEditor
 {
 
 
@@ -503,8 +503,8 @@ namespace  com.yodo1.qui
             GUI.color = Color.gray;
             GUI.backgroundColor = Color.white;
             GUILayout.BeginHorizontal();
-            GUILayout.Label(label, GUILayout.Width(titleWidth), GUILayout.Height(bodyWidth));
-            bool k = EditorGUILayout.Toggle(value, GUILayout.Width(TEXT_WIDTH));
+            GUILayout.Label(label, GUILayout.Width(titleWidth), GUILayout.Height(TITLE_WIDTH));
+            bool k = EditorGUILayout.Toggle(value, GUILayout.Width(bodyWidth));
             if(k != value)
             {
                 if (cur_clicked_guid != label) actionId = ACTION_CLICK;
