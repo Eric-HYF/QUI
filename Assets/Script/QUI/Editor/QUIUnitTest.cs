@@ -15,7 +15,6 @@ public class UnitTestWindow : EditorWindow
     [MenuItem("QUI/Test")]
     public static void TestQUI()
     {
-
         _window = EditorWindow.GetWindow<UnitTestWindow>();
         _window.Init();
     }

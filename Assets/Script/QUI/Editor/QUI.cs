@@ -63,6 +63,19 @@ namespace  UnityEditor
 
         #endregion
 
+        #region 公用接口
+
+        /// <summary>
+        /// 清除编辑标记
+        /// </summary>
+        public static void CleanEditMark()
+        {
+            cur_clicked_guid = "";
+        }
+
+        #endregion
+
+
         #region TextField
 
         /// <summary>
@@ -181,9 +194,9 @@ namespace  UnityEditor
             GUI.color = Color.cyan;
             GUI.backgroundColor = Color.gray;
             strTemp = GUILayout.TextField(strTemp, GUILayout.Width(bodyWidth), GUILayout.Height(TEXT_HEIGHT));
-            Button(CHECK_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.green, Color.green, () => { id = ACTION_CLICK; });
-            Button(CROSS_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.red, Color.red, () => { id = ACTION_CANCEL; });
-            Button(PASTE_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.yellow, Color.yellow, () => { id = ACTION_PASTE; });
+            if(Button(CHECK_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.green, Color.green)) { id = ACTION_CLICK; };
+            if(Button(CROSS_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.red, Color.red )) { id = ACTION_CANCEL; };
+            if(Button(PASTE_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.yellow, Color.yellow)){ id = ACTION_PASTE; };
             GUILayout.EndHorizontal();
 
             actionId = id;
@@ -329,9 +342,9 @@ namespace  UnityEditor
             GUI.color = Color.cyan;
             GUI.backgroundColor = Color.gray;
             intTemp = EditorGUILayout.IntField(intTemp, GUILayout.Width(bodyWidth), GUILayout.Height(TEXT_HEIGHT));
-            Button(CHECK_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.green, Color.green, () => { id = ACTION_CLICK; });
-            Button(CROSS_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.red, Color.red, () => { id = ACTION_CANCEL; });
-            Button(PASTE_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.yellow, Color.yellow, () => { id = ACTION_PASTE; });
+            if( Button(CHECK_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.green, Color.green)) { id = ACTION_CLICK; };
+            if( Button(CROSS_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.red, Color.red)){ id = ACTION_CANCEL; };
+            if( Button(PASTE_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.yellow, Color.yellow)) { id = ACTION_PASTE; };
             GUILayout.EndHorizontal();
 
 
@@ -477,9 +490,9 @@ namespace  UnityEditor
             GUILayout.Label(label, GUILayout.Width(titleWidth));
 
             boolTmp = EditorGUILayout.Toggle(boolTmp, GUILayout.Width(bodyWidth));
-            Button(CHECK_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.green, Color.green, () => { id = ACTION_CLICK; });
-            Button(CROSS_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.red, Color.red, () => { id = ACTION_CANCEL; });
-            Button(PASTE_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.yellow, Color.yellow, () => { id = ACTION_PASTE; });
+            if( Button(CHECK_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.green, Color.green)) { id = ACTION_CLICK; };
+            if( Button(CROSS_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.red, Color.red)) { id = ACTION_CANCEL; };
+            if( Button(PASTE_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.yellow, Color.yellow)) { id = ACTION_PASTE; };
             GUILayout.EndHorizontal();
 
 
@@ -503,7 +516,7 @@ namespace  UnityEditor
             GUI.color = Color.gray;
             GUI.backgroundColor = Color.white;
             GUILayout.BeginHorizontal();
-            GUILayout.Label(label, GUILayout.Width(titleWidth), GUILayout.Height(TITLE_WIDTH));
+            GUILayout.Label(label, GUILayout.Width(titleWidth), GUILayout.Height(TEXT_HEIGHT));
             bool k = EditorGUILayout.Toggle(value, GUILayout.Width(bodyWidth));
             if(k != value)
             {
@@ -530,17 +543,19 @@ namespace  UnityEditor
         /// <param name="w"></param>
         /// <param name="h"></param>
         /// <param name="frontColor"></param>
-        public static void Button(string name, float w, float h, Color frontColor, Color backColor, Action onClick)
+        public static bool Button(string name, float w, float h, Color frontColor, Color backColor)
         {
-
+            bool res = false;
             GUI.color = frontColor;
             GUI.backgroundColor = backColor;
             if (GUILayout.Button(name, GUILayout.Width(w), GUILayout.Height(h)))
             {
-                if (onClick != null) onClick();
+                res = true;
             }
             GUI.color = Color.white;
             GUI.backgroundColor = Color.white;
+
+            return res;
         }
 
 
