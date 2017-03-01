@@ -51,14 +51,20 @@ public class UnitTestWindow : EditorWindow
 
 
 
-        QUI.TextField(ref data.id, "ID", 200);
-        QUI.TextField(ref data.name, "Name", 200);
-        QUI.IntField(ref data.number, "Count", 200);
-        QUI.Toggle(ref data.isObject, "isObject", 200);
+        data.id = QUI.TextField(data.id, "ID", 200);
+        data.name = QUI.TextField(data.name, "Name", 200);
+        data.number = QUI.IntField(data.number, "Count", 200);
+        data.isObject = QUI.Toggle(data.isObject, "isObject", 200);
 
         GUILayout.Space(10);
         GUILayout.Label("------------------------------");
         GUILayout.Space(10);
+
+
+        if(QUI.Button("Test", 80, 40, Color.green, Color.green))
+        {
+            Debug.Log("<color=#00ff00>Hello</color>");
+        }
 
 
         if (QUI.CurClickedGUI == "ID") GUI.color = Color.green;

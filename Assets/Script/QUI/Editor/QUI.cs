@@ -84,7 +84,7 @@ namespace  UnityEditor
         /// <param name="value"></param>
         /// <param name="label">the unique id for the ui </param>
         /// <returns></returns>
-        public static void TextField(ref string value, string label, float bodyWidth = TEXT_WIDTH, float titleWidth = TITLE_WIDTH)
+        public static string TextField(string value, string label, float bodyWidth = TEXT_WIDTH, float titleWidth = TITLE_WIDTH)
         {
             string guid = label;
             int id = ACTION_NONE;
@@ -98,6 +98,7 @@ namespace  UnityEditor
                 if(id == ACTION_CLICK)
                 {
                     cur_clicked_guid = guid;
+                    if (string.IsNullOrEmpty(value)) value = " ";
                     strBuff[guid] = value;
                     strTemp = value;
                 }
@@ -143,12 +144,15 @@ namespace  UnityEditor
                         {
                             strBuff.Remove(cur_clicked_guid);
                             cur_clicked_guid = label; // Click and change target
+                            if (string.IsNullOrEmpty(value)) value = " ";
                             strBuff[label] = value;
                             strTemp = value;
                         }
                     }
                 }
             }
+
+            return value;
         }
 
         /// <summary>
@@ -193,7 +197,16 @@ namespace  UnityEditor
 
             GUI.color = Color.cyan;
             GUI.backgroundColor = Color.gray;
-            strTemp = GUILayout.TextField(strTemp, GUILayout.Width(bodyWidth), GUILayout.Height(TEXT_HEIGHT));
+            if (strTemp == null) strTemp = string.IsNullOrEmpty(value) ? "" : value;
+            try
+            {
+                strTemp = GUILayout.TextField(strTemp, GUILayout.Width(bodyWidth), GUILayout.Height(TEXT_HEIGHT));
+            }
+            catch(Exception e)
+            {
+                Debug.LogFormat("Input Error: <color=red>{0}</color>", e.Message);
+            }
+
             if(Button(CHECK_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.green, Color.green)) { id = ACTION_CLICK; };
             if(Button(CROSS_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.red, Color.red )) { id = ACTION_CANCEL; };
             if(Button(PASTE_MARK, BUTTON_WIDTH_2, BUTTON_HEIGHT_2, Color.yellow, Color.yellow)){ id = ACTION_PASTE; };
@@ -240,7 +253,7 @@ namespace  UnityEditor
         /// </summary>
         /// <param name="value"></param>
         /// <param name="label"></param>
-        public static void IntField(ref int value, string label, float bodyWidth = TEXT_WIDTH, float titleWidth = TITLE_WIDTH)
+        public static int IntField(int value, string label, float bodyWidth = TEXT_WIDTH, float titleWidth = TITLE_WIDTH)
         {
             int actionId = 0;
             if (string.IsNullOrEmpty(cur_clicked_guid))
@@ -297,7 +310,7 @@ namespace  UnityEditor
                 }
             }
 
-
+            return value;
         }
 
 
@@ -388,7 +401,7 @@ namespace  UnityEditor
         /// </summary>
         /// <param name="value"></param>
         /// <param name="label"></param>
-        public static void Toggle(ref bool value, string label, float bodyWidth = TEXT_WIDTH, float titleWidth = TITLE_WIDTH)
+        public static bool Toggle(bool value, string label, float bodyWidth = TEXT_WIDTH, float titleWidth = TITLE_WIDTH)
         {
             int actionId = 0;
             if (string.IsNullOrEmpty(cur_clicked_guid))
@@ -444,7 +457,7 @@ namespace  UnityEditor
                 }
             }
 
-
+            return value;
         }
 
 
@@ -557,6 +570,29 @@ namespace  UnityEditor
 
             return res;
         }
+
+
+
+        #endregion
+
+        #region 快捷键
+
+
+        private static void OnHotKeyCheck()
+        {
+            if(Input.GetKeyUp(KeyCode.Return))
+            {
+                Debug.Log(">>>> Enter");
+            }
+
+            if (Input.GetKeyUp(KeyCode.Escape))
+            {
+                Debug.Log(">>>> ESC");
+
+            }
+
+        }
+
 
 
 
